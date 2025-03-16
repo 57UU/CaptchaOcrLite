@@ -43,4 +43,4 @@ def fetch_and_save_captcha():
 def get_numbers_of_captcha(num):
     for i in range(num):
         fetch_and_save_captcha()
-        time.sleep(0.3)
+        # time.sleep(0.3)

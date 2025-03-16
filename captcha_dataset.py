@@ -43,8 +43,8 @@ class RealCaptchaDataset(Dataset):
 
 realCaptchaDataset = RealCaptchaDataset()
 
-test_size=100
-_realCaptchaTrainDataset, _realCaptchaTestDataset = torch.utils.data.random_split(realCaptchaDataset, [test_size, len(realCaptchaDataset)-test_size])
+test_size=500
+_realCaptchaTestDataset,_realCaptchaTrainDataset = torch.utils.data.random_split(realCaptchaDataset, [test_size, len(realCaptchaDataset)-test_size])
 
 realCaptchaTrainDataLoader = DataLoader(_realCaptchaTrainDataset, batch_size=16, shuffle=True)
 realCaptchaTestDataLoader = DataLoader(_realCaptchaTestDataset, batch_size=512, shuffle=False)
