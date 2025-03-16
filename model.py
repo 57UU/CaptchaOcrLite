@@ -113,7 +113,9 @@ def predict(x):
         result.append(num2char[max_index.item()])
     return "".join(result)
 
-def display_image(x=train_dataset[0][0]):
+def display_image(x=None):
+    if x is None:
+        x=train_dataset[0][0]
     # 如果 x 是 PyTorch 张量，将其转换为 NumPy 数组
     if isinstance(x, torch.Tensor):
         x = x.cpu().float().numpy()
@@ -133,9 +135,10 @@ def load_model(model=captchaModel):
     import os
     files=[float(i.replace(".pth","")) for i in os.listdir("out")]
     files.sort(reverse=True)
-    model_path=f"out/{files[0]}.pth"
+    model_path=f"out/{files[0]:.3f}.pth"
     model.load_state_dict(torch.load(model_path))
     print(f"Model loaded from {model_path}")
     return model
+
 
 load_model()
