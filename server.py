@@ -2,7 +2,7 @@ import http.server
 import json
 import base64
 
-from model import predict_image
+from predict import predict_image_from_bytes
 
 class OCRRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -29,7 +29,7 @@ class OCRRequestHandler(http.server.SimpleHTTPRequestHandler):
                 # 将base64解码为字节
                 img_bytes = base64.b64decode(img_base64)
                 # 使用ddddocr识别验证码
-                result = predict_image(img_bytes)
+                result = predict_image_from_bytes(img_bytes)
                 # 返回识别结果
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')

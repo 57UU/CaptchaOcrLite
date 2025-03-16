@@ -10,7 +10,11 @@ def predict_image_from_bytes(image:bytes):
     image=Image.open(io.BytesIO(image))
     return predict_image(image)
 
-def predict_image(image:Image.Image):
+def predict_image(image:Image.Image)->str:
+    print("size:",image.size)
+    # 裁剪左上角26x80的部分
+    image=image.crop((0,0,80,26))
+    print("size:",image.size)
     image=image.convert("RGB")
     image=np.array(image)
     tensor=torch.tensor(image).float()/255.0
