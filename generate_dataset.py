@@ -12,13 +12,13 @@ mono="fonts/JetBrainsMonoNL-Regular.ttf"
 arial="fonts/ARIAL.TTF"
 
 # 生成默认含4个字符验证码的图片
-def check_code(width=80, height=26, char_length=4, font_file=arial, font_size=18):
+def check_code(width=80, height=26, char_length=4, font_file=arial, font_size=19):
     code = []
     img = Image.new(mode='RGB', size=(width, height), color=(255, 255, 255))
     img_txt = Image.new(mode='RGBA', size=(width, height), color=(255, 255, 255,0))
     draw = ImageDraw.Draw(img, mode='RGB')
     draw_txt = ImageDraw.Draw(img_txt, mode='RGBA')
-    safe_margin = 13
+    safe_margin = 12
     width_org=width
     width-=safe_margin*2
 
@@ -32,13 +32,11 @@ def check_code(width=80, height=26, char_length=4, font_file=arial, font_size=18
         return index
     def rndChar():
         """
-        生成随机大小写字母
+        生成随机大写字母,num
         :return:
         """
-        up_or_low = random.randint(0, 2)
+        up_or_low = random.randint(0, 1)
         if up_or_low == 0:
-            return chr(remove_o_O_mapper_noncap(random.randint(97, 121)))
-        elif up_or_low == 1:
             return chr(remove_o_O_mapper_cap(random.randint(65, 89)))
         return chr(random.randint(49, 57)) #no 0
     
@@ -84,11 +82,11 @@ def check_code(width=80, height=26, char_length=4, font_file=arial, font_size=18
     for i in range(char_length):
         char = rndChar()
         code.append(char2num[char])
-        h = random.randint(-2, 2)
-        draw_txt.text([i * width / char_length+rndXOffset()+safe_margin,h], char, font=font, fill=rndColor(),stroke_width=0.2)
+        h = random.randint(-2, 5)
+        draw_txt.text([i * width / char_length+rndXOffset()+safe_margin,h], char, font=font, fill=rndColor(),stroke_width=0.15)
     # 分离 alpha 通道
     r, g, b, alpha = img_txt.split()
-    # 对 alpha 通道进行二值化处理（假设阈值为 128）
+    # 对 alpha 通道进行二值化处理
     alpha = alpha.point(lambda p: 255 if p > 128 else 0)
     # 重新组合图像
     img_txt.putalpha(alpha)

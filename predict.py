@@ -20,7 +20,7 @@ def predict_image(image:Image.Image):
 
 
 def img_test(index=1):
-    image=Image.open(f"test/{index}.png")
+    image=Image.open(f"real_captcha/img/{index}.png")
     print(predict_image(image))
 
 if __name__=="__main__":

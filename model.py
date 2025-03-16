@@ -51,12 +51,12 @@ class CaptchaModel(nn.Module):
 
 captchaModel = CaptchaModel().to(device)
 optimizer = torch.optim.Adam(captchaModel.parameters(), lr=0.0002)
-def train(epoch=2):
+def train(epoch=2,dataLoader=trainDataLoader):
     captchaModel.train()
     
     for i in range(epoch):
         total_loss=0
-        for x, y in tqdm.tqdm(trainDataLoader, desc=f'Epoch {i + 1}/{epoch}'):
+        for x, y in tqdm.tqdm(dataLoader, desc=f'Epoch {i + 1}/{epoch}'):
             y_pred = captchaModel(x)
             optimizer.zero_grad()
             for j in range(4):
@@ -64,15 +64,15 @@ def train(epoch=2):
                 total_loss+=loss.item()
                 loss.backward(retain_graph=True)
             optimizer.step()
-        print(f"Epoch {i + 1}/{epoch} loss: {total_loss / (len(trainDataLoader) * 4)}")
+        print(f"Epoch {i + 1}/{epoch} loss: {total_loss / (len(dataLoader) * 4)}")
 
-def test():
+def test(dataLoader=realCaptchaTestDataLoader):
     captchaModel.eval()
     with torch.no_grad():
         single_correct = 0
         all_correct = 0
         total = 0
-        for x, y in testDataLoader:
+        for x, y in dataLoader:
             y_pred = captchaModel(x)
             batch_size = x.size(0)
             statistics=torch.zeros(batch_size).to(device)
@@ -95,7 +95,7 @@ def test():
 
 
 def show_img_model(index=0):
-    x,y=test_dataset[index]
+    x,y=_test_dataset[index]
     display_image(x)
     y_pred=predict(x)
     target_str="".join([num2char[i.item()] for i in y])
@@ -115,7 +115,7 @@ def predict(x):
 
 def display_image(x=None):
     if x is None:
-        x=train_dataset[0][0]
+        x=_test_dataset[0][0]
     # 如果 x 是 PyTorch 张量，将其转换为 NumPy 数组
     if isinstance(x, torch.Tensor):
         x = x.cpu().float().numpy()
