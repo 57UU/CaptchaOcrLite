@@ -10,7 +10,7 @@ char_length = len(num2char)
 class CaptchaONNXInference:
     def __init__(self, model_path="export/captcha_model.onnx", providers=None):
         if providers is None:
-            providers = ['CUDAExecutionProvider', 'CPUExecutionProvider']
+            providers = ['CPUExecutionProvider']
         self.session = ort.InferenceSession(model_path, providers=providers)
         self.input_name = self.session.get_inputs()[0].name
         self.output_name = self.session.get_outputs()[0].name
