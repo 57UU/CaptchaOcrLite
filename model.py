@@ -175,4 +175,11 @@ def load_model(model=captchaModel):
     model.load_state_dict(torch.load(model_path))
     print(f"Model loaded from {model_path}")
 
+def export_onnx():
+    import os
+    os.makedirs("export",exist_ok=True)
+    x=captchaDataset[0][0]
+    x.unsqueeze_(0)
+    torch.onnx.export(captchaModel,x,"export/onnx_model.onnx",export_params=True,opset_version=20,input_names=["input"],output_names=["output"],optimize=True)
+
 load_model()
